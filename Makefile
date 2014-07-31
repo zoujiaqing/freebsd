@@ -129,7 +129,7 @@ TGTS+=	${BITGTS}
 .ORDER: buildkernel reinstallkernel
 .ORDER: buildkernel reinstallkernel.debug
 
-PATH=	/usr/home/andrew/freebsd/repo/aarch64-freebsd-sandbox/toolchain/build/aarch64-none-freebsd10/bin:/sbin:/bin:/usr/sbin:/usr/bin
+PATH=	/usr/local/aarch64-freebsd/bin:/sbin:/bin:/usr/sbin:/usr/bin
 MAKEOBJDIRPREFIX?=	/usr/obj
 _MAKEOBJDIRPREFIX!= /usr/bin/env -i PATH=${PATH} ${MAKE} \
     ${.MAKEFLAGS:MMAKEOBJDIRPREFIX=*} __MAKE_CONF=${__MAKE_CONF} \
