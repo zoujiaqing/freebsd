@@ -563,6 +563,9 @@ initarm(struct arm64_bootparams *abp)
 	try_load_dtb(kmdp);
 #endif
 
+	/* TODO: Remove when we have multi-user mode working */
+	boothowto |= RB_SINGLE;
+
 	/* Find the address to start allocating from */
 	lastaddr = MD_FETCH(kmdp, MODINFOMD_KERNEND, vm_offset_t);
 
