@@ -29,6 +29,10 @@
 #ifndef _MACHINE_ARMREG_H_
 #define	_MACHINE_ARMREG_H_
 
+/* Cache Type Register definitions */
+#define	CTR_DLINE_SHIFT		16
+#define	CTR_DLINE_MASK		0xf
+
 /* Memory Attribute Indirection register */
 /* TODO: Should this be in a pte header? */
 #define	MAIR(attr, idx) ((attr) << ((idx) * 8))
