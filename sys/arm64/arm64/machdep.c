@@ -25,6 +25,8 @@
  *
  */
 
+#include "opt_platform.h"
+
 #include <sys/cdefs.h>
 __FBSDID("$FreeBSD$");
 
@@ -65,9 +67,10 @@ __FBSDID("$FreeBSD$");
 #include <machine/reg.h>
 #include <machine/vmparam.h>
 
+#ifdef FDT
+#include <dev/fdt/fdt_common.h>
 #include <dev/ofw/openfirm.h>
-
-#include "opt_platform.h"
+#endif
 
 struct pcpu __pcpu[MAXCPU];
 struct pcpu *pcpup = &__pcpu[0];
@@ -506,6 +509,18 @@ try_load_dtb(caddr_t kmdp)
 	vm_offset_t dtbp;
 
 	dtbp = MD_FETCH(kmdp, MODINFOMD_DTBP, vm_offset_t);
+
+#if defined(FDT_DTB_STATIC)
+	/*
+	 * In case the device tree blob was not retrieved (from metadata) try
+	 * to use the statically embedded one.
+	 */
+	if (dtbp == (vm_offset_t)NULL) {
+		printf("Using compiled-in default DTB\n");
+		dtbp = (vm_offset_t)&fdt_static_dtb;
+	}
+#endif
+
 	if (dtbp == (vm_offset_t)NULL) {
 		printf("ERROR loading DTB\n");
 		return;
