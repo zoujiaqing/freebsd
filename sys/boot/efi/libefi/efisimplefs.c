@@ -42,6 +42,14 @@ __FBSDID("$FreeBSD$");
 #include <efilib.h>
 #include <efiprot.h>
 
+#undef DEBUG
+
+#ifdef DEBUG
+#define dprintf(...)	printf(__VA_ARGS__)
+#else
+#define dprintf(...)
+#endif
+
 #define	SEMIHOSTING_HACKS
 
 static EFI_GUID sfs_guid = SIMPLE_FILE_SYSTEM_PROTOCOL;
@@ -173,7 +181,7 @@ efifs_read(struct open_file *f, void *buf, size_t size, size_t *resid)
 static int
 efifs_write(struct open_file *f, void *buf, size_t size, size_t *resid)
 {
-	printf("efifs_write\n");
+	dprintf("efifs_write\n");
 
 	return (EINVAL);
 }
@@ -422,6 +430,6 @@ efisfs_close(struct open_file *f)
 static void
 efisfs_print(int verbose)
 {
-	printf("efisfs_print\n");
+	dprintf("efisfs_print\n");
 }
 
