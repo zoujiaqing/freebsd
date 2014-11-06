@@ -92,6 +92,9 @@ struct kva_md_info kmi;
 static void
 cpu_startup(void *dummy)
 {
+
+	identify_cpu();
+
 	vm_ksubmap_init(&kmi);
 	bufinit();
 	vm_pager_bufferinit();

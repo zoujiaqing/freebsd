@@ -54,6 +54,7 @@ extern char etext[];
 void	cpu_halt(void) __dead2;
 void	cpu_reset(void) __dead2;
 void	fork_trampoline(void);
+void	identify_cpu(void);
 void	swi_vm(void *v);
 
 static __inline uint64_t
