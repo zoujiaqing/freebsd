@@ -54,6 +54,7 @@ struct arch_switch archsw;	/* MI/MD interface boundary */
 EFI_GUID acpi = ACPI_TABLE_GUID;
 EFI_GUID acpi20 = ACPI_20_TABLE_GUID;
 EFI_GUID devid = DEVICE_PATH_PROTOCOL;
+EFI_GUID fdtdtb = FDT_TABLE_GUID;
 EFI_GUID imgid = LOADED_IMAGE_PROTOCOL;
 EFI_GUID mps = MPS_TABLE_GUID;
 EFI_GUID netid = EFI_SIMPLE_NETWORK_PROTOCOL;
@@ -273,6 +274,8 @@ command_configuration(int argc, char *argv[])
 			printf("ACPI Table");
 		else if (!memcmp(guid, &acpi20, sizeof(EFI_GUID)))
 			printf("ACPI 2.0 Table");
+		else if (!memcmp(guid, &fdtdtb, sizeof(EFI_GUID)))
+			printf("FDT Table");
 		else if (!memcmp(guid, &smbios, sizeof(EFI_GUID)))
 			printf("SMBIOS Table");
 		else

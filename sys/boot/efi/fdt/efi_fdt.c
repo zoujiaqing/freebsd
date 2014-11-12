@@ -32,16 +32,29 @@ __FBSDID("$FreeBSD$");
 
 #include <sys/param.h>
 #include <stand.h>
+#include <efi.h>
+#include <efilib.h>
 #include <fdt_platform.h>
 
 #include "bootstrap.h"
 
+static EFI_GUID fdtdtb = FDT_TABLE_GUID;
+
 int
 fdt_platform_load_dtb(void)
 {
+	struct fdt_header *hdr;
 	int err;
 
-	printf("TODO: Load the fdt data from EFI\n");
+	hdr = efi_get_table(&fdtdtb);
+	if (hdr != NULL) {
+		if (fdt_load_dtb_addr(hdr) == 0) {
+			printf("Using DTB provided by EFI at %p.\n", hdr);
+			return (0);
+		}
+	}
+
+	printf("EFI did not provide DTB, falling back to use /foundation.dtb\n");
 	err = fdt_load_dtb_file("/foundation.dtb");
 
 	return (err);
