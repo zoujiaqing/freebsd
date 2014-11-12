@@ -450,13 +450,14 @@ _txp=		txp
 .endif
 
 
-.if ${MACHINE_CPUARCH} != "arm" && ${MACHINE_CPUARCH} != "mips" && \
-	${MACHINE_CPUARCH} != "powerpc"
+.if ${MACHINE_CPUARCH} != "arm" && ${MACHINE_CPUARCH} != "arm64" && \
+	${MACHINE_CPUARCH} != "mips" && ${MACHINE_CPUARCH} != "powerpc"
 _syscons=	syscons
 _vpo=		vpo
 .endif
 
-.if ${MACHINE_CPUARCH} != "arm" && ${MACHINE_CPUARCH} != "mips"
+.if ${MACHINE_CPUARCH} != "arm" && ${MACHINE_CPUARCH} != "arm64" && \
+	${MACHINE_CPUARCH} != "mips"
 # no BUS_SPACE_UNSPECIFIED
 # No barrier instruction support (specific to this driver)
 _sym=		sym
