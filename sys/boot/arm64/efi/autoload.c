@@ -1,6 +1,10 @@
 /*-
  * Copyright (c) 2010 Rui Paulo <rpaulo@FreeBSD.org>
+ * Copyright (c) 2014 The FreeBSD Foundation
  * All rights reserved.
+ *
+ * Portions of this software were developed by Andrew Turner
+ * under sponsorship from the FreeBSD Foundation.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -27,37 +31,20 @@
 #include <sys/cdefs.h>
 __FBSDID("$FreeBSD$");
 
-#if 1
-#include <stand.h>
-#include "bootstrap.h"
+#include <sys/param.h>
 
-/* HACK: Load the foundation model dtb from disk */
-static int
-load_dtb_file(const char *filename)
-{
-	struct preloaded_file *bfp, *oldbfp;
-	int err;
-
-	oldbfp = file_findfile(NULL, "dtb");
-
-	/* Attempt to load and validate a new dtb from a file. */
-	if ((bfp = file_loadraw(filename, "dtb")) == NULL) {
-		printf("failed to load file '%s': %s\n", filename, command_errbuf);
-		return (1);
-	}
-
-	/* A new dtb was validated, discard any previous file. */
-	if (oldbfp)
-		file_discard(oldbfp);
-	return (0);
-}
+#if defined(LOADER_FDT_SUPPORT)
+#include <fdt_platform.h>
 #endif
 
 int
 amd64_autoload(void)
 {
+#if defined(LOADER_FDT_SUPPORT)
+	int err;
 
-	load_dtb_file("/foundation.dtb");
-
+	if ((err = fdt_setup_fdtp()) != 0)
+		return (err);
+#endif
 	return (0);
 }

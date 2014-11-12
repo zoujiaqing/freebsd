@@ -26,6 +26,13 @@ CFLAGS+=	-I${.CURDIR}/../../ficl
 CFLAGS+=	-I${.CURDIR}/../../ficl/arm64
 LIBFICL=	${.OBJDIR}/../../ficl/libficl.a
 .endif
+.if ${MK_FDT} != "no"
+CFLAGS+=	-I${.CURDIR}/../../fdt
+CFLAGS+=	-I${.OBJDIR}/../../fdt
+CFLAGS+=	-DLOADER_FDT_SUPPORT
+LIBEFI_FDT=	${.OBJDIR}/../../efi/fdt/libefi_fdt.a
+LIBFDT=		${.OBJDIR}/../../fdt/libfdt.a
+.endif
 
 # Always add MI sources 
 .PATH:		${.CURDIR}/../../common
@@ -48,7 +55,9 @@ vers.c:	${.CURDIR}/../../common/newvers.sh ${.CURDIR}/version
 	sh ${.CURDIR}/../../common/newvers.sh ${.CURDIR}/version ${NEWVERSWHAT}
 
 OBJCOPY?=	objcopy
-OBJDUMP?=	objdump
+.if !defined(OBJDUMP) || empty(OBJDUMP)
+OBJDUMP=	objdump
+.endif
 
 loader.efi: loader.sym
 	if [ `${OBJDUMP} -t ${.ALLSRC} | fgrep '*UND*' | wc -l` != 0 ]; then \
@@ -62,7 +71,7 @@ loader.efi: loader.sym
 LIBEFI=		${.OBJDIR}/../../efi/libefi/libefi.a
 
 DPADD=		${LIBFICL} ${LIBEFI} ${LIBSTAND}
-LDADD=		${LIBFICL} ${LIBEFI} ${.OBJDIR}/../../../../lib/libstand/libstand.a
+LDADD=		${LIBFICL} ${LIBEFI} ${LIBFDT} ${LIBEFI_FDT} ${.OBJDIR}/../../../../lib/libstand/libstand.a
 #${LIBSTAND}
 
 .include <bsd.prog.mk>

@@ -1,7 +1,11 @@
 /*-
  * Copyright (c) 2008-2010 Rui Paulo
  * Copyright (c) 2006 Marcel Moolenaar
+ * Copyright (c) 2014 The FreeBSD Foundation
  * All rights reserved.
+ *
+ * Portions of this software were developed by Andrew Turner
+ * under sponsorship from the FreeBSD Foundation.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -382,5 +386,24 @@ command_nvram(int argc, char *argv[])
 
 	return (CMD_OK);
 }
+#endif
+
+#ifdef LOADER_FDT_SUPPORT
+extern int command_fdt_internal(int argc, char *argv[]);
+
+/*
+ * Since proper fdt command handling function is defined in fdt_loader_cmd.c,
+ * and declaring it as extern is in contradiction with COMMAND_SET() macro
+ * (which uses static pointer), we're defining wrapper function, which
+ * calls the proper fdt handling routine.
+ */
+static int
+command_fdt(int argc, char *argv[])
+{
+
+	return (command_fdt_internal(argc, argv));
+}
+
+COMMAND_SET(fdt, "fdt", "flattened device tree handling", command_fdt);
 #endif
 
