@@ -1,6 +1,10 @@
 /*-
  * Copyright (c) 2014 Andrew Turner
+ * Copyright (c) 2014 The FreeBSD Foundation
  * All rights reserved.
+ *
+ * This software was developed by Andrew Turner under
+ * sponsorship from the FreeBSD Foundation.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -365,9 +369,8 @@ static int
 efisfs_strategy(void *devdata, int rw, daddr_t blk, size_t size, char *buf,
     size_t *rsize)
 {
-	printf("efisfs_strategy\n");
 
-	return (ENXIO);
+	return (EIO);
 }
 
 static int
