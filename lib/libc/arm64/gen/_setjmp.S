@@ -1,6 +1,10 @@
 /*-
  * Copyright (c) 2014 Andrew Turner
+ * Copyright (c) 2014 The FreeBSD Foundation
  * All rights reserved.
+ *
+ * Portions of this software were developed by Andrew Turner
+ * under sponsorship from the FreeBSD Foundation
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -35,7 +39,7 @@ ENTRY(_setjmp)
 	stp	x23, x24, [x0], #16
 	stp	x25, x26, [x0], #16
 	stp	x27, x28, [x0], #16
-	stp	x29, x29, [x0], #16
+	stp	x29, lr, [x0], #16
 
 	/* Reserve space for the floating point register */
 	add	x0, x0, #(8 * 8)
@@ -56,7 +60,8 @@ ENTRY(_longjmp)
 	ldp	x23, x24, [x0], #16
 	ldp	x25, x26, [x0], #16
 	ldp	x27, x28, [x0], #16
-	ldp	x29, x29, [x0], #16
+	ldp	x29, lr, [x0], #16
+
 
 	/* Reserve space for the floating point register */
 	add	x0, x0, #(8 * 8)
