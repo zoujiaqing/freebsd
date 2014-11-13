@@ -122,7 +122,7 @@
 /**
  * Address space layout.
  *
- * ARMv8 implements up to a 47 bit virtual address space. The address space is
+ * ARMv8 implements up to a 48 bit virtual address space. The address space is
  * split into 2 regions at each end of the 64 bit address space, with an
  * out of range "hole" in the middle.
  *
