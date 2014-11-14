@@ -199,8 +199,6 @@ uart_cpu_getdev(int devtype, struct uart_devinfo *di)
 	if (err)
 		pbase = 0;
 
-	/* TODO: fdt_get_range to work with the Foundation Models dts */
-	pbase = 0x1c000000;
 	start += pbase;
 
 	return (bus_space_map(di->bas.bst, start, size, 0, &di->bas.bsh));
