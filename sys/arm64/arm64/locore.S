@@ -427,8 +427,10 @@ start_mmu:
 	ldr	x2, mair
 	msr	mair_el1, x2
 
-	/* Setup TCR */
+	/* Setup TCR according to PARange bits from ID_AA64MMFR0_EL1 */
 	ldr	x2, tcr
+	mrs	x3, id_aa64mmfr0_el1
+	bfi	x2, x3, #32, #3
 	msr	tcr_el1, x2
 
 	/* Setup SCTLR */
@@ -449,8 +451,7 @@ mair:
 		/* Device       Normal, no cache   Normal, write-back */
 	.quad	MAIR(0x00, 0) | MAIR(0x44, 1)    | MAIR(0xff, 2)
 tcr:
-	.quad (TCR_TxSZ(64 - VIRT_BITS) | TCR_ASID_16 | TCR_IPS_40BIT | \
-	    TCR_TG1_4K)
+	.quad (TCR_TxSZ(64 - VIRT_BITS) | TCR_ASID_16 | TCR_TG1_4K)
 sctlr_set:
 	/* Bits to set */
 	.quad (SCTLR_UCI | SCTLR_nTWE | SCTLR_nTWI | SCTLR_UCT | SCTLR_DZE | \
