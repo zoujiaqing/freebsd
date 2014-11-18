@@ -1,6 +1,10 @@
 /*-
  * Copyright 2001 David E. O'Brien
+ * Copyright 2014 The FreeBSD Foundation
  * All rights reserved.
+ *
+ * Portions of this software were developed by Andrew Turner
+ * under sponsorship from the FreeBSD Foundation.
  *
  * Redistribution and use in source and binary forms, with or without
  * modification, are permitted provided that the following conditions
@@ -39,5 +43,6 @@ _init:
 	.globl	_fini
 	.type	_fini,@function
 _fini:
-	1: b 1b
+	sub	sp, sp, #16
+	str	lr, [sp]
 
