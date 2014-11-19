@@ -1041,7 +1041,7 @@ pmap_bootstrap(vm_offset_t l1pt, vm_paddr_t kernstart, vm_size_t kernlen)
 	/* TODO: Move this to a function */
 	__asm __volatile(
 	    "dsb  sy		\n"
-	    "tlbi vmalle1	\n"
+	    "tlbi vmalle1is	\n"
 	    "dsb  sy		\n"
 	    "isb		\n");
 
@@ -1483,7 +1483,7 @@ pmap_invalidate_page(pmap_t pmap, vm_offset_t va)
 
 	__asm __volatile(
 	    "dsb  sy		\n"
-	    "tlbi vaae1, %0	\n"
+	    "tlbi vaae1is, %0	\n"
 	    "dsb  sy		\n"
 	    "isb		\n"
 	    : : "r"(va >> PAGE_SHIFT));
@@ -1500,7 +1500,7 @@ pmap_invalidate_range(pmap_t pmap, vm_offset_t sva, vm_offset_t eva)
 		__asm __volatile("dsb	sy");
 		for (addr = sva; addr < eva; addr++) {
 			__asm __volatile(
-			    "tlbi vaae1, %0" : : "r"(addr));
+			    "tlbi vaae1is, %0" : : "r"(addr));
 		}
 		__asm __volatile(
 		    "dsb  sy	\n"
@@ -1514,7 +1514,7 @@ pmap_invalidate_all(pmap_t pmap)
 
 	__asm __volatile(
 	    "dsb  sy		\n"
-	    "tlbi vmalle1	\n"
+	    "tlbi vmalle1is	\n"
 	    "dsb  sy		\n"
 	    "isb		\n");
 }

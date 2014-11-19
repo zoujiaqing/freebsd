@@ -64,7 +64,10 @@ ENTRY(cpu_throw)
 	isb
 
 	/* Invalidate the TLB */
-	tlbi	vmalle1
+	dsb	sy
+	tlbi	vmalle1is
+	dsb	sy
+	isb
 
 	/* Restore the registers */
 	ldp	x5, x6, [x4, #PCB_SP]
@@ -149,7 +152,10 @@ ENTRY(cpu_switch)
 	isb
 
 	/* Invalidate the TLB */
+	dsb	sy
 	tlbi	vmalle1is
+	dsb	sy
+	isb
 
 	/* Release the old thread */
 	str	x2, [x0, #TD_LOCK]
